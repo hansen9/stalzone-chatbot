@@ -31,3 +31,10 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Secrets — never commit these ###
+# Local override properties (put your OPENROUTER_API_KEY here)
+application-local.properties
+src/main/resources/application-local.properties
+.env
+*.env

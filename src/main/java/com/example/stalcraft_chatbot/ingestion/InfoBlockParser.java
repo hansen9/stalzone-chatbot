@@ -2,227 +2,140 @@ package com.example.stalcraft_chatbot.ingestion;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-// This is the heart of your ingestion — NOT a throw-away utility
+// InfoBlockParser — owns all logic for reading the infoBlocks structure from GitHub JSON.
+// Two responsibilities:
+//   1. Deserialise a raw JsonNode into typed InfoBlock objects (parseInfoBlocks)
+//   2. Extract specific stats from those typed objects (extractNumericStat, extractAllNumericStats)
 @Component
+@RequiredArgsConstructor
+@Slf4j
 public class InfoBlockParser {
+
+    // Injected ObjectMapper — consistent config, and enables testing with a mock
+    private final ObjectMapper objectMapper;
+
+    // Entry point for the ingestion pipeline.
+    // Takes the raw infoBlocks JsonNode from GithubDataFetcher.GameDocument
+    // and deserialises it into a typed list we can work with.
+    public List<InfoBlock> parseInfoBlocks(JsonNode infoBlocksNode) {
+        if (infoBlocksNode == null || !infoBlocksNode.isArray() || infoBlocksNode.isEmpty()) {
+            return Collections.emptyList();
+        }
+        try {
+            // ObjectMapper reads the JSON array into a List<InfoBlock>.
+            // @JsonIgnoreProperties on each inner class handles unknown fields gracefully.
+            return objectMapper.readerForListOf(InfoBlock.class).readValue(infoBlocksNode);
+        } catch (Exception e) {
+            // Don't crash ingestion over one item's malformed infoBlocks
+            log.warn("Failed to parse infoBlocks: {}", e.getMessage());
+            return Collections.emptyList();
+        }
+    }
 
     // Extract a specific stat by its stable key
     // e.g. key = "stalker.artefact_properties.factor.bullet_dmg_factor"
     public Optional<Double> extractNumericStat(List<InfoBlock> blocks, String statKey) {
         return blocks.stream()
-            .filter(b -> "list" .equals(b.getType()))
-            .flatMap(b -> b.getElements().stream())
-            .filter(e -> "numeric".equals(e.getType()))
-            .filter(e -> e.getName() != null && statKey.equals(e.getName().getKey()))
-            .map(Element::getValue)
-            .findFirst();
+                .filter(b -> "list".equals(b.getType()))
+                .flatMap(b -> b.getElements().stream())
+                .filter(e -> "numeric".equals(e.getType()))
+                .filter(e -> e.getName() != null && statKey.equals(e.getName().getKey()))
+                .map(Element::getValue)
+                .findFirst();
     }
 
-    // Extract ALL numeric stats as a flat map — useful for comparator tool
+    // Extract ALL numeric stats as a flat map — used by GameItemMapper and the comparator tool
     // Map<statKey, value>  e.g. {"bullet_dmg_factor" -> 231.0, "weight" -> 30.0}
     public Map<String, Double> extractAllNumericStats(List<InfoBlock> blocks) {
         return blocks.stream()
-            .filter(b -> "list".equals(b.getType()))
-            .flatMap(b -> b.getElements().stream())
-            .filter(e -> "numeric".equals(e.getType()))
-            .filter(e -> e.getName() != null && e.getName().getKey() != null)
-            .collect(Collectors.toMap(
-                e -> e.getName().getKey(),
-                Element::getValue,
-                (a, b) -> a // keep first on collision — same key can appear in multiple blocks
-            ));
+                .filter(b -> "list".equals(b.getType()))
+                .flatMap(b -> b.getElements().stream())
+                .filter(e -> "numeric".equals(e.getType()))
+                .filter(e -> e.getName() != null && e.getName().getKey() != null)
+                .filter(e -> e.getValue() != null)
+                .collect(Collectors.toMap(
+                        e -> e.getName().getKey(),
+                        Element::getValue,
+                        (a, b) -> a  // keep first on key collision — same stat in multiple blocks
+                ));
     }
 
+    // -------------------------------------------------------------------------
+    // Inner classes — typed representation of the GitHub infoBlocks structure.
+    // @Data (Lombok) generates getters, setters, equals, hashCode, toString.
+    // @JsonIgnoreProperties(ignoreUnknown = true) silently skips unknown fields —
+    // important because the game schema has fields we don't need.
+    // -------------------------------------------------------------------------
+
+    @Data
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class InfoBlock {
         private String type;
         private InfoBlockTitle title;
-        private List<Element> elements;
-
-        public String getType() {
-            return type;
-        }
-
-        public void setType(String type) {
-            this.type = type;
-        }
-
-        public InfoBlockTitle getTitle() {
-            return title;
-        }
-
-        public void setTitle(InfoBlockTitle title) {
-            this.title = title;
-        }
-
-        public List<Element> getElements() {
-            return elements;
-        }
-
-        public void setElements(List<Element> elements) {
-            this.elements = elements;
-        }
+        private List<Element> elements = Collections.emptyList();
     }
 
+    @Data
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class InfoBlockTitle {
         private String type;
         private String text;
         private String key;
         private Map<String, String> lines;
-
-        public String getType() {
-            return type;
-        }
-
-        public void setType(String type) {
-            this.type = type;
-        }
-
-        public String getText() {
-            return text;
-        }
-
-        public void setText(String text) {
-            this.text = text;
-        }
-
-        public String getKey() {
-            return key;
-        }
-
-        public void setKey(String key) {
-            this.key = key;
-        }
-
-        public Map<String, String> getLines() {
-            return lines;
-        }
-
-        public void setLines(Map<String, String> lines) {
-            this.lines = lines;
-        }
     }
 
+    @Data
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Element {
         private String type;
         private ElementName key;
         private ElementName name;
-        private Object value;
         private Formatted formatted;
 
-        public String getType() {
-            return type;
-        }
-
-        public void setType(String type) {
-            this.type = type;
-        }
-
-        public ElementName getKey() {
-            return key;
-        }
-
-        public void setKey(ElementName key) {
-            this.key = key;
-        }
-
-        public ElementName getName() {
-            return name;
-        }
-
-        public void setName(ElementName name) {
-            this.name = name;
-        }
-
-        public Double getValue() {
-            if (value instanceof Number) {
-                return ((Number) value).doubleValue();
-            }
-            return null;
-        }
+        // value can be a number, string, or boolean in the GitHub data.
+        // We store it as Object and coerce to Double on read.
+        private Object value;
 
         @JsonProperty("value")
         public void setValue(Object value) {
             this.value = value;
         }
 
-        public Formatted getFormatted() {
-            return formatted;
-        }
-
-        public void setFormatted(Formatted formatted) {
-            this.formatted = formatted;
+        // Coerce to Double — handles Integer, Long, Float, Double from Jackson
+        public Double getValue() {
+            if (value instanceof Number) {
+                return ((Number) value).doubleValue();
+            }
+            return null;
         }
     }
 
+    @Data
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class ElementName {
         private String type;
         private String key;
         private Map<String, String> lines;
-
-        public String getType() {
-            return type;
-        }
-
-        public void setType(String type) {
-            this.type = type;
-        }
-
-        public String getKey() {
-            return key;
-        }
-
-        public void setKey(String key) {
-            this.key = key;
-        }
-
-        public Map<String, String> getLines() {
-            return lines;
-        }
-
-        public void setLines(Map<String, String> lines) {
-            this.lines = lines;
-        }
     }
 
+    @Data
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Formatted {
         private Map<String, String> value;
         private String nameColor;
         private String valueColor;
-
-        public Map<String, String> getValue() {
-            return value;
-        }
-
-        public void setValue(Map<String, String> value) {
-            this.value = value;
-        }
-
-        public String getNameColor() {
-            return nameColor;
-        }
-
-        public void setNameColor(String nameColor) {
-            this.nameColor = nameColor;
-        }
-
-        public String getValueColor() {
-            return valueColor;
-        }
-
-        public void setValueColor(String valueColor) {
-            this.valueColor = valueColor;
-        }
     }
 }

@@ -5,62 +5,95 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>4.0.6</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<!-- Pinned to 3.3.x: current LTS, stable Spring AI support, most StackOverflow coverage -->
+		<version>3.3.6</version>
+		<relativePath/>
 	</parent>
+
 	<groupId>com.example</groupId>
 	<artifactId>stalcraft-chatbot</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name/>
-	<description/>
-	<url/>
-	<licenses>
-		<license/>
-	</licenses>
-	<developers>
-		<developer/>
-	</developers>
-	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
-	</scm>
-	<properties>
-		<java.version>25</java.version>
-	</properties>
-	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter</artifactId>
-		</dependency>
+	<name>stalcraft-chatbot</name>
+	<description>Stalcraft X AI assistant — build advisor, TTK calculator, marketplace trends</description>
 
+	<properties>
+		<!-- Java 21: current LTS. Gives you records, sealed classes, virtual threads. -->
+		<java.version>21</java.version>
+		<!-- Spring AI BOM version — managed separately from Spring Boot -->
+		<spring-ai.version>1.0.0</spring-ai.version>
+	</properties>
+
+	<!-- Spring AI has its own BOM (Bill of Materials) because it releases independently
+	     from Spring Boot. Importing it here means we don't need to specify versions
+	     on individual spring-ai-* dependencies below. -->
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.ai</groupId>
+				<artifactId>spring-ai-bom</artifactId>
+				<version>${spring-ai.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+
+		<!-- ===== Web ===== -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
+		<!-- ===== Persistence ===== -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 
+		<!-- H2: in-memory DB for local dev. Swap for postgresql driver when you move to Postgres.
+		     'runtime' scope = only needed when the app runs, not at compile time. -->
 		<dependency>
-			<groupId>com.vladmihalcea</groupId>
-			<artifactId>hibernate-types-60</artifactId>
-			<version>2.21.1</version>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>runtime</scope>
 		</dependency>
 
+		<!-- ===== AI ===== -->
+		<!-- spring-ai-openai covers any OpenAI-compatible API, including OpenRouter.
+		     We'll point the base-url at OpenRouter in application.properties. -->
+		<dependency>
+			<groupId>org.springframework.ai</groupId>
+			<artifactId>spring-ai-starter-model-openai</artifactId>
+		</dependency>
+
+		<!-- ===== Dev Tools ===== -->
+		<!-- Lombok: eliminates boilerplate getters/setters/constructors.
+		     'optional=true' means it won't leak into downstream projects if this
+		     ever becomes a library dependency. -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+		<!-- Hot reload: restarts app on classpath changes during development.
+		     Automatically disabled in production builds. -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
+		</dependency>
+
+		<!-- ===== Test ===== -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>tools.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-			<version>3.1.4</version>
-		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -68,6 +101,16 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<!-- Tells the Maven plugin to exclude Lombok from the final JAR —
+					     it's only needed at compile time, not at runtime. -->
+					<excludes>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+					</excludes>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

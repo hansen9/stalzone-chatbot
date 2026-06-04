@@ -34,7 +34,6 @@ class GithubDataFetcherTest {
 
     @Test
     void happyPath(WireMockRuntimeInfo wmInfo) throws Exception {
-        int port = wmInfo.getHttpPort();
 
         // Load fixture data
         String fixtureBody = new String(
@@ -55,8 +54,6 @@ class GithubDataFetcherTest {
 
     @Test
     void NonArrayResponse(WireMockRuntimeInfo wmInfo) throws Exception {
-        int port = wmInfo.getHttpPort();
-
         // Load fixture data
         String fixtureBody = new String(
             getClass().getResourceAsStream("/fixtures/items.json").readAllBytes()
@@ -76,8 +73,6 @@ class GithubDataFetcherTest {
 
     @Test
     void EmptyArray(WireMockRuntimeInfo wmInfo) throws Exception {
-        int port = wmInfo.getHttpPort();
-
         // Load fixture data
         String fixtureBody = new String(
             getClass().getResourceAsStream("/fixtures/items.json").readAllBytes()
@@ -91,7 +86,6 @@ class GithubDataFetcherTest {
         List<GameDocument> result = fetcher.fetchItemData();
         
         assertThat(result).isNotNull();
-        assertThat(result).hasSize(1);
-        assertThat(result.get(0).id()).isEqualTo("0r2g1");
+        assertThat(result).hasSize(0);
     }
 }

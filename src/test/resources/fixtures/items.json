@@ -1,0 +1,91 @@
+[
+  {
+    "type": "list",
+    "title": {
+      "type": "translation",
+      "key": "item.wpn.9a91.block.main",
+      "lines": { "en": "Main Stats", "ru": "Основные характеристики" }
+    },
+    "elements": [
+      {
+        "type": "numeric",
+        "name": {
+          "type": "translation",
+          "key": "item.wpn.9a91.damage",
+          "lines": { "en": "Damage", "ru": "Урон" }
+        },
+        "value": 54.0,
+        "formatted": {
+          "value": { "en": "54", "ru": "54" },
+          "nameColor": "WHITE",
+          "valueColor": "WHITE"
+        }
+      },
+      {
+        "type": "numeric",
+        "name": {
+          "type": "translation",
+          "key": "item.wpn.9a91.rate_of_fire",
+          "lines": { "en": "Rate of Fire", "ru": "Скорострельность" }
+        },
+        "value": 700.0,
+        "formatted": {
+          "value": { "en": "700", "ru": "700" },
+          "nameColor": "WHITE",
+          "valueColor": "WHITE"
+        }
+      },
+      {
+        "type": "numeric",
+        "name": {
+          "type": "translation",
+          "key": "item.wpn.9a91.weight",
+          "lines": { "en": "Weight", "ru": "Вес" }
+        },
+        "value": 25.0,
+        "formatted": {
+          "value": { "en": "2.5 kg", "ru": "2.5 кг" },
+          "nameColor": "WHITE",
+          "valueColor": "WHITE"
+        }
+      }
+    ]
+  },
+  {
+    "type": "text",
+    "title": {
+      "type": "text",
+      "text": ""
+    },
+    "text": {
+      "type": "text",
+      "text": ""
+    }
+  },
+  {
+    "type": "damage_ramp",
+    "startDamage": 54.0,
+    "damageDecreaseStart": 30,
+    "damageDecreaseEnd": 60,
+    "endDamage": 27.0,
+    "maxDistance": 100
+  },
+  {
+    "type": "list",
+    "elements": [
+      {
+        "type": "key-value",
+        "key": {
+          "type": "translation",
+          "key": "item.wpn.9a91.class",
+          "lines": { "en": "Class", "ru": "Класс" }
+        },
+        "value": {
+          "type": "translation",
+          "key": "item.class.assault_rifle",
+          "lines": { "en": "Assault Rifle", "ru": "Штурмовая винтовка" }
+        }
+      }
+    ]
+  }
+]

@@ -4,8 +4,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.util.Assert;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.springframework.web.client.RestClient;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
@@ -20,16 +21,25 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @WireMockTest
 class GithubDataFetcherTest {
+    private GithubDataFetcher fetcher;
+
+    @BeforeEach
+    void setUp(WireMockRuntimeInfo wmInfo) {
+        fetcher = new GithubDataFetcher(
+            RestClient.builder(),
+            new ObjectMapper(),
+            "http://localhost:" + wmInfo.getHttpPort()
+        );
+    }   
 
     @Test
     void happyPath(WireMockRuntimeInfo wmInfo) throws Exception {
         int port = wmInfo.getHttpPort();
-        ObjectMapper objectMapper = new ObjectMapper();
-        GithubDataFetcher fetcher = new GithubDataFetcher(RestClient.builder(), objectMapper, "http://localhost:" + port);
 
         // Load fixture data
-        String fixtureBody = new String(Files.readAllBytes(
-            Paths.get("src/test/resources/fixtures/items.json")));
+        String fixtureBody = new String(
+            getClass().getResourceAsStream("/fixtures/items.json").readAllBytes()
+        );
 
         stubFor(get(urlEqualTo("/items.json"))
             .willReturn(aResponse()
@@ -38,8 +48,8 @@ class GithubDataFetcherTest {
 
         List<GameDocument> result = fetcher.fetchItemData();
         
-        Assert.notNull(result, "Result should not be null");
-        Assert.isTrue(result.size() == 1, "Expected 1 item");
-        Assert.isTrue(result.get(0).id().equals("0r2g1"), "Expected item with ID '0r2g1'");
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).id()).isEqualTo("0r2g1");
     }
 }

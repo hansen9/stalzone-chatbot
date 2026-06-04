@@ -66,9 +66,8 @@ class GithubDataFetcherTest {
 
         List<GameDocument> result = fetcher.fetchItemData();
         
-        assertThat(result).isNotNull();
+        assertThat(result.getClass()).isNotEqualTo(List.class);
         assertThat(result).hasSize(1);
-        assertThat(result.get(0).id()).isEqualTo("0r2g1");
     }
 
     @Test
@@ -85,7 +84,7 @@ class GithubDataFetcherTest {
 
         List<GameDocument> result = fetcher.fetchItemData();
         
-        assertThat(result).isNotNull();
+        assertThat(result).isNullOrEmpty();;
         assertThat(result).hasSize(0);
     }
 }

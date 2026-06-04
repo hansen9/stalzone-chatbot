@@ -2,6 +2,7 @@ package com.example.stalcraft_chatbot.ingestion;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -66,7 +67,7 @@ class GithubDataFetcherTest {
 
         List<GameDocument> result = fetcher.fetchItemData();
         
-        assertThat(result.getClass()).isNotEqualTo(List.class);
+        assertThat(result.getClass()).isNotEqualTo(ArrayList.class);
         assertThat(result).hasSize(1);
     }
 

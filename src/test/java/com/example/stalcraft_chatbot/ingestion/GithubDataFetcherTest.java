@@ -71,19 +71,14 @@ class GithubDataFetcherTest {
 
     @Test
     void EmptyArray(WireMockRuntimeInfo wmInfo) throws Exception {
-        // Load fixture data
-        String fixtureBody = new String(
-            getClass().getResourceAsStream("/fixtures/items.json").readAllBytes()
-        );
 
         stubFor(get(urlEqualTo("/items.json"))
             .willReturn(aResponse()
                 .withHeader("Content-Type", "application/json")
-                .withBody(fixtureBody)));
+                .withBody("[]")));
 
         List<GameDocument> result = fetcher.fetchItemData();
         
-        assertThat(result).isNullOrEmpty();;
-        assertThat(result).hasSize(0);
+        assertThat(result).isEmpty();  // cleaner than isNullOrEmpty + hasSize(0) — pick one
     }
 }

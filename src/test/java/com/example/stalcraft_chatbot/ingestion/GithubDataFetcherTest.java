@@ -1,5 +1,6 @@
 package com.example.stalcraft_chatbot.ingestion;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -8,6 +9,8 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import org.springframework.web.client.RestClient;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
@@ -55,20 +58,15 @@ class GithubDataFetcherTest {
 
     @Test
     void NonArrayResponse(WireMockRuntimeInfo wmInfo) throws Exception {
-        // Load fixture data
-        String fixtureBody = new String(
-            getClass().getResourceAsStream("/fixtures/items.json").readAllBytes()
-        );
 
         stubFor(get(urlEqualTo("/items.json"))
             .willReturn(aResponse()
                 .withHeader("Content-Type", "application/json")
-                .withBody(fixtureBody)));
-
-        List<GameDocument> result = fetcher.fetchItemData();
+                .withBody("{}")));
         
-        assertThat(result.getClass()).isNotEqualTo(ArrayList.class);
-        assertThat(result).hasSize(1);
+        assertThatThrownBy(() -> fetcher.fetchItemData())
+            .isInstanceOf(IOException.class)
+            .hasMessageContaining("OBJECT");
     }
 
     @Test

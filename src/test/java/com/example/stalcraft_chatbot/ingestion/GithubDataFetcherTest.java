@@ -57,7 +57,7 @@ class GithubDataFetcherTest {
     }
 
     @Test
-    void NonArrayResponse(WireMockRuntimeInfo wmInfo) throws Exception {
+    void nonArrayResponse_shouldThrowIOException(WireMockRuntimeInfo wmInfo) throws Exception {
 
         stubFor(get(urlEqualTo("/items.json"))
             .willReturn(aResponse()
@@ -70,7 +70,7 @@ class GithubDataFetcherTest {
     }
 
     @Test
-    void EmptyArray(WireMockRuntimeInfo wmInfo) throws Exception {
+    void emptyArray_shouldReturnEmptyList(WireMockRuntimeInfo wmInfo) throws Exception {
 
         stubFor(get(urlEqualTo("/items.json"))
             .willReturn(aResponse()

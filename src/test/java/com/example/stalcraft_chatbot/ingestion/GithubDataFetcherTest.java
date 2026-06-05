@@ -1,9 +1,6 @@
 package com.example.stalcraft_chatbot.ingestion;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -51,9 +48,10 @@ class GithubDataFetcherTest {
 
         List<GameDocument> result = fetcher.fetchItemData();
         
-        assertThat(result).isNotNull();
         assertThat(result).hasSize(1);
         assertThat(result.get(0).id()).isEqualTo("0r2g1");
+        assertThat(result.get(0).category()).isEqualTo("weapon/assault_rifle");
+        assertThat(result.get(0).nameEn()).isEqualTo("9A-91");
     }
 
     @Test

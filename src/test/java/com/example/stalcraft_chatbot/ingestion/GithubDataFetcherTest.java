@@ -37,7 +37,7 @@ class GithubDataFetcherTest {
     }   
 
     @Test
-    void happyPath(WireMockRuntimeInfo wmInfo) throws Exception {
+    void happyPath() throws Exception {
 
         // Load fixture data
         String fixtureBody = new String(
@@ -57,7 +57,7 @@ class GithubDataFetcherTest {
     }
 
     @Test
-    void nonArrayResponse_shouldThrowIOException(WireMockRuntimeInfo wmInfo) throws Exception {
+    void nonArrayResponse_shouldThrowIOException() throws Exception {
 
         stubFor(get(urlEqualTo("/items.json"))
             .willReturn(aResponse()
@@ -70,7 +70,7 @@ class GithubDataFetcherTest {
     }
 
     @Test
-    void emptyArray_shouldReturnEmptyList(WireMockRuntimeInfo wmInfo) throws Exception {
+    void emptyArray_shouldReturnEmptyList() throws Exception {
 
         stubFor(get(urlEqualTo("/items.json"))
             .willReturn(aResponse()

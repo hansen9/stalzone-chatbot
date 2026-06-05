@@ -25,8 +25,8 @@
 | # | Task | Status | Notes |
 |---|------|--------|-------|
 | 9  | `InfoBlockParserTest` — pure unit test, real fixture (`0r2g1.json`) | ✅ | 10 cases: happy path, empty elements, null/bad input |
-| 10 | `GithubDataFetcherTest` — WireMock fake HTTP server | 🔲 | Serves fixture JSON, verifies GameDocument mapping |
-| 11 | `DataIngestionServiceTest` — Mockito, verifies orchestration | 🔲 | Mock fetcher/parser/mapper/repo, verify call flow |
+| 10 | `GithubDataFetcherTest` — WireMock fake HTTP server | ✅ | Serves fixture JSON, verifies GameDocument mapping |
+| 11 | `DataIngestionServiceTest` — Mockito, verifies orchestration | 🔄 | Mock fetcher/parser/mapper/repo, verify call flow |
 
 ---
 

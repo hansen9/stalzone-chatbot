@@ -1,5 +1,8 @@
 package com.example.stalcraft_chatbot.ingestion;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.util.List;
 import java.util.Map;
 
@@ -10,9 +13,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.example.stalcraft_chatbot.domain.GameItem;
+import com.example.stalcraft_chatbot.ingestion.InfoBlockParser.ElementName;
+import com.example.stalcraft_chatbot.ingestion.InfoBlockParser.InfoBlock;
 import com.example.stalcraft_chatbot.repository.ItemRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+
+import lombok.Data;
 
 @ExtendWith(MockitoExtension.class)
 class DataIngestionServiceTest {
@@ -53,9 +61,17 @@ class DataIngestionServiceTest {
     }
 
     @Test
-    void shouldSaveItemsForValidDocuments() {
-        // 1. stub all three mocks to return something sensible
+    void shouldSaveItemsForValidDocuments() throws Exception{
+        DataIngestionService service = mock(DataIngestionService.class);
+        InfoBlockParser parser = mock(InfoBlockParser.class);
+        GameItemMapper mapper = mock(GameItemMapper.class);
         
+        List<InfoBlockParser.InfoBlock> mockInfoBlocks = List.of(); // assuming infoBlocks is an array of strings for simplicity
+        
+        // 1. stub all three mocks to return something sensible
+        when(githubDataFetcher.fetchItemData()).thenReturn(List.of(validDoc));
+        when(infoBlockParser.parseInfoBlocks(validDoc.infoBlocks())).thenReturn(mockInfoBlocks);
+        when(gameItemMapper.toEntity(validDoc, Map.of("damage", 10.0, "durability", 100.0))).thenReturn(new GameItem());
         // 2. call ingestItems()
         // 3. verify saveAll was called with the right items
     }

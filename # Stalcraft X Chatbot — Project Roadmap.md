@@ -26,14 +26,14 @@
 |---|------|--------|-------|
 | 9  | `InfoBlockParserTest` — pure unit test, real fixture (`0r2g1.json`) | ✅ | 10 cases: happy path, empty elements, null/bad input |
 | 10 | `GithubDataFetcherTest` — WireMock fake HTTP server | ✅ | Serves fixture JSON, verifies GameDocument mapping |
-| 11 | `DataIngestionServiceTest` — Mockito, verifies orchestration | 🔄 | Mock fetcher/parser/mapper/repo, verify call flow |
+| 11 | `DataIngestionServiceTest` — Mockito, verifies orchestration | ✅ | Mock fetcher/parser/mapper/repo, verify call flow |
 
 ---
 
 ## Phase 3 — AI Layer 🔲
 | # | Task | Status | Notes |
 |---|------|--------|-------|
-| 12 | `AiConfig` — configure Spring AI `ChatClient`, system prompt | 🔲 | Stalcraft-aware system prompt, OpenRouter model |
+| 12 | `AiConfig` — configure Spring AI `ChatClient`, system prompt | 🔄 | Stalcraft-aware system prompt, OpenRouter model |
 | 13 | `ItemLookUpTool` — `@Tool` method, queries `ItemRepository` | 🔲 | First Spring AI tool — sets the pattern for all others |
 | 14 | `ChatService` — wires `ChatClient` + tools, conversation memory | 🔲 | Stateless first, add memory in Phase 5 |
 | 15 | `ChatController` — `POST /api/chat`, request/response DTOs | 🔲 | `ChatRequest`, `ChatResponse` |

@@ -33,9 +33,9 @@
 ## Phase 3 — AI Layer 🔲
 | # | Task | Status | Notes |
 |---|------|--------|-------|
-| 12 | `AiConfig` — configure Spring AI `ChatClient`, system prompt | 🔄 | Stalcraft-aware system prompt, OpenRouter model |
-| 13 | `ItemLookUpTool` — `@Tool` method, queries `ItemRepository` | 🔲 | First Spring AI tool — sets the pattern for all others |
-| 14 | `ChatService` — wires `ChatClient` + tools, conversation memory | 🔲 | Stateless first, add memory in Phase 5 |
+| 12 | `AiConfig` — configure Spring AI `ChatClient`, system prompt | ✅ | Stalcraft-aware system prompt, OpenRouter model |
+| 13 | `ItemLookUpTool` — `@Tool` method, queries `ItemRepository` | ✅ | First Spring AI tool — sets the pattern for all others |
+| 14 | `ChatService` — wires `ChatClient` + tools, conversation memory | 🔄 | Stateless first, add memory in Phase 5 |
 | 15 | `ChatController` — `POST /api/chat`, request/response DTOs | 🔲 | `ChatRequest`, `ChatResponse` |
 | 16 | `WebConfig` — CORS config for Vue dev server on port 5173 | 🔲 | Needed before frontend can call backend |
 

@@ -21,7 +21,7 @@
 
 ---
 
-## Phase 2 — Tests 🔄
+## Phase 2 — Tests ✅
 | # | Task | Status | Notes |
 |---|------|--------|-------|
 | 9  | `InfoBlockParserTest` — pure unit test, real fixture (`0r2g1.json`) | ✅ | 10 cases: happy path, empty elements, null/bad input |
@@ -30,7 +30,7 @@
 
 ---
 
-## Phase 3 — AI Layer 🔲
+## Phase 3 — AI Layer 🔄
 | # | Task | Status | Notes |
 |---|------|--------|-------|
 | 12 | `AiConfig` — configure Spring AI `ChatClient`, system prompt | ✅ | Stalcraft-aware system prompt, OpenRouter model |

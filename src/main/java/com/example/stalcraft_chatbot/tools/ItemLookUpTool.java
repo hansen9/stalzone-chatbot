@@ -16,7 +16,7 @@ public class ItemLookUpTool {
     public String itemLookUp(String itemName) {
         // if the item is found, return a string with its details; otherwise, return a not-found message
         return itemRepository.findByNameEnIgnoreCase(itemName)
-            .map(item -> String.format("Item: %s\nCategory: %s\nColor: %s\nstatsJson: %s",
+            .map(item -> String.format("Item: %s\nCategory: %s\nColor: %s\nStats: %s",
                     item.getNameEn(), item.getCategory(), item.getColor(), item.getStatsJson()))
             .orElse(String.format("Sorry, I couldn't find an item named '%s'.", itemName));
     }

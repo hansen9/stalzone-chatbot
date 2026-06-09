@@ -34,7 +34,6 @@ public class ChatService {
             .call()
             .content();
 
-        // For now, let's just return a simple response.
         return response;
     }
 }

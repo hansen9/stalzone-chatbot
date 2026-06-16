@@ -3,9 +3,9 @@ package com.example.stalcraft_chatbot.chat;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.example.stalcraft_chatbot.chat.dto.ChatRequest;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/api/chat")
@@ -20,7 +20,7 @@ public class ChatController {
     @PostMapping("/send")
     public String sendMessage(@RequestBody ChatRequest message) {
         
-        chatService.chat(message.chatId(), message.message());
-        return "Message sent successfully"; 
+        String response = chatService.chat(message.chatId(), message.message());
+        return response;
     }
 }

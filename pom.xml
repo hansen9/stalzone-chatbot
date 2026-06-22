@@ -14,7 +14,7 @@
 	<artifactId>stalzone-chatbot</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>stalzone-chatbot</name>
-	<description>Stalzone X AI assistant — build advisor, TTK calculator, marketplace trends</description>
+	<description>Stalzone AI assistant — build advisor, TTK calculator, marketplace trends</description>
 
 	<properties>
 		<!-- Java 21: current LTS. Gives you records, sealed classes, virtual threads. -->

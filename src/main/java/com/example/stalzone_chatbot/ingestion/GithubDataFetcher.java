@@ -9,7 +9,6 @@ import org.springframework.web.client.RestClient;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 // GithubDataFetcher — single responsibility: fetch raw JSON from GitHub and
@@ -21,7 +20,7 @@ public class GithubDataFetcher {
     private final RestClient restApiClient;
     private final RestClient restRawClient;
     private final ObjectMapper objectMapper;
-    private final String githubBaseUrl;
+    private final String githubRepo;
 
     // Constructor injection — the right way to inject dependencies in Spring.
     // Why not @Autowired on fields? Constructor injection makes dependencies explicit
@@ -46,11 +45,11 @@ public class GithubDataFetcher {
                 .baseUrl(rawBaseUrl)
                 .build();
         this.objectMapper = objectMapper;
-        this.githubBaseUrl = githubRepo;
+        this.githubRepo = githubRepo;
     }
 
     public List<GameDocument> fetchItemData() throws IOException {
-        log.info("Fetching item data from {}", githubBaseUrl);
+        log.info("Fetching item data from {}", githubRepo);
         // fetch the git tree to get a list of all files in the repo
         List<String> paths = fetchTree();
 
@@ -69,7 +68,7 @@ public class GithubDataFetcher {
                         .retrieve()
                         .body(String.class);
                 JsonNode itemJson = objectMapper.readTree(rawContent);
-                GameDocument doc = fetchAndParseItem(itemJson);
+                GameDocument doc = parseItemData(itemJson);
                 if (doc.id() != null && !doc.id().isBlank()) {
                     documents.add(doc);
                 } else {
@@ -79,6 +78,7 @@ public class GithubDataFetcher {
                 log.error("Failed to fetch or parse item at path {}: {}", path, e.getMessage(), e);
             }
         }
+        log.info("Fetched {} valid item documents from GitHub", documents.size());
         return documents;
     }
 
@@ -91,6 +91,9 @@ public class GithubDataFetcher {
                     .body(String.class);
 
             JsonNode root = objectMapper.readTree(payload);
+            if (root.path("truncated").asBoolean(false)) {
+                log.warn("GitHub tree response is truncated — some items may be missing");
+            }
             JsonNode tree = root.path("tree");
             if (!tree.isArray()) {
                 log.error("Expected 'tree' to be an array in GitHub API response, got: {}", tree.getNodeType());
@@ -111,9 +114,8 @@ public class GithubDataFetcher {
         }
     }
 
-    private GameDocument fetchAndParseItem(JsonNode item) {
-        // This method can be used to fetch and parse individual item files if the data is split across multiple files.
-        // For now, we assume all item data is in a single JSON file that we fetch directly.
+    private GameDocument parseItemData(JsonNode item) {
+        // parse the item data from JsonNode and return a GameDocument
         
         return new GameDocument(
                 item.path("id").asText(null),

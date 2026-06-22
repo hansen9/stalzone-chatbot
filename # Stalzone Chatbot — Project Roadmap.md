@@ -1,4 +1,4 @@
-# Stalzone X Chatbot — Project Roadmap
+# Stalzone Chatbot — Project Roadmap
 
 ## Current Status Legend
 - ✅ Complete

@@ -16,7 +16,7 @@ import org.springframework.core.io.Resource;
 
 @Configuration
 public class AiConfig {
-    @Value("classpath:stalzone-x-assistant-prompt.md")
+    @Value("classpath:stalzone-assistant-prompt.md")
     private Resource promptsResource;
 
     @Bean

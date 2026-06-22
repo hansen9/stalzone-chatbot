@@ -1,4 +1,4 @@
-package com.example.stalcraft_chatbot.ingestion;
+package com.example.stalzone_chatbot.ingestion;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

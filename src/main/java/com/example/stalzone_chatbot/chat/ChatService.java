@@ -1,11 +1,11 @@
-package com.example.stalcraft_chatbot.chat;
+package com.example.stalzone_chatbot.chat;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.stereotype.Service;
 
-import com.example.stalcraft_chatbot.tools.ItemLookUpTool;
+import com.example.stalzone_chatbot.tools.ItemLookUpTool;
 
 @Service
 public class ChatService {

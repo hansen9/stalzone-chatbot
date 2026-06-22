@@ -1,10 +1,10 @@
-package com.example.stalcraft_chatbot;
+package com.example.stalzone_chatbot;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class StalcraftChatbotApplicationTests {
+class StalzoneChatbotApplicationTests {
 
 	@Test
 	void contextLoads() {

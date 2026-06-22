@@ -1,11 +1,11 @@
-package com.example.stalcraft_chatbot.chat;
+package com.example.stalzone_chatbot.chat;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.example.stalcraft_chatbot.chat.dto.ChatRequest;
+import com.example.stalzone_chatbot.chat.dto.ChatRequest;
 
 @RestController
 @RequestMapping("/api/chat")

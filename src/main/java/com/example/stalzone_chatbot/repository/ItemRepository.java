@@ -1,6 +1,6 @@
-package com.example.stalcraft_chatbot.repository;
+package com.example.stalzone_chatbot.repository;
 
-import com.example.stalcraft_chatbot.domain.GameItem;
+import com.example.stalzone_chatbot.domain.GameItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

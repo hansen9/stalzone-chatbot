@@ -1,4 +1,4 @@
-package com.example.stalcraft_chatbot.ingestion;
+package com.example.stalzone_chatbot.ingestion;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
@@ -15,8 +15,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.example.stalcraft_chatbot.domain.GameItem;
-import com.example.stalcraft_chatbot.repository.ItemRepository;
+import com.example.stalzone_chatbot.domain.GameItem;
+import com.example.stalzone_chatbot.repository.ItemRepository;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 
 

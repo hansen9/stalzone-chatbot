@@ -11,10 +11,10 @@
 	</parent>
 
 	<groupId>com.example</groupId>
-	<artifactId>stalcraft-chatbot</artifactId>
+	<artifactId>stalzone-chatbot</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>stalcraft-chatbot</name>
-	<description>Stalcraft X AI assistant — build advisor, TTK calculator, marketplace trends</description>
+	<name>stalzone-chatbot</name>
+	<description>Stalzone X AI assistant — build advisor, TTK calculator, marketplace trends</description>
 
 	<properties>
 		<!-- Java 21: current LTS. Gives you records, sealed classes, virtual threads. -->

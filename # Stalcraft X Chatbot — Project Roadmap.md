@@ -1,4 +1,4 @@
-# Stalcraft X Chatbot — Project Roadmap
+# Stalzone X Chatbot — Project Roadmap
 
 ## Current Status Legend
 - ✅ Complete
@@ -33,7 +33,7 @@
 ## Phase 3 — AI Layer 🔄
 | # | Task | Status | Notes |
 |---|------|--------|-------|
-| 12 | `AiConfig` — configure Spring AI `ChatClient`, system prompt | ✅ | Stalcraft-aware system prompt, OpenRouter model |
+| 12 | `AiConfig` — configure Spring AI `ChatClient`, system prompt | ✅ | Stalzone-aware system prompt, OpenRouter model |
 | 13 | `ItemLookUpTool` — `@Tool` method, queries `ItemRepository` | ✅ | First Spring AI tool — sets the pattern for all others |
 | 14 | `ChatService` — wires `ChatClient` + tools, conversation memory | ✅ | Stateless first, add memory in Phase 5 |
 | 15 | `ChatController` — `POST /api/chat`, request/response DTOs | ✅ | `ChatRequest`, `ChatResponse` |
@@ -50,7 +50,7 @@
 | 18 | Build suggester tool | 🔲 | Queries items by category, filters by rank/stats |
 | 19 | Item comparator tool | 🔲 | Side-by-side stat diff for multiple items |
 | 20 | Crafting calculator tool | 🔲 | Requires crafting recipe data from GitHub repo |
-| 21 | Marketplace trends tool | 🔲 | ⚠️ Needs Stalcraft public API — not GitHub data. Research API availability + rate limits before starting. |
+| 21 | Marketplace trends tool | 🔲 | ⚠️ Needs Stalzone public API — not GitHub data. Research API availability + rate limits before starting. |
 
 ---
 

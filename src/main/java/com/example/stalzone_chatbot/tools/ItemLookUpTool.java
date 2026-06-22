@@ -1,9 +1,9 @@
-package com.example.stalcraft_chatbot.tools;
+package com.example.stalzone_chatbot.tools;
 
 import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.stereotype.Component;
 
-import com.example.stalcraft_chatbot.repository.ItemRepository;
+import com.example.stalzone_chatbot.repository.ItemRepository;
 
 @Component
 public class ItemLookUpTool {

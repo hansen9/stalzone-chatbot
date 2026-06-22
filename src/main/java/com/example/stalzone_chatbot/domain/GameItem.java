@@ -1,4 +1,4 @@
-package com.example.stalcraft_chatbot.domain;
+package com.example.stalzone_chatbot.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

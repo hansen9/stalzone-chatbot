@@ -1,6 +1,6 @@
-package com.example.stalcraft_chatbot.ingestion;
+package com.example.stalzone_chatbot.ingestion;
 
-import com.example.stalcraft_chatbot.domain.GameItem;
+import com.example.stalzone_chatbot.domain.GameItem;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;

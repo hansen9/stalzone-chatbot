@@ -1,7 +1,7 @@
-package com.example.stalcraft_chatbot.ingestion;
+package com.example.stalzone_chatbot.ingestion;
 
-import com.example.stalcraft_chatbot.domain.GameItem;
-import com.example.stalcraft_chatbot.repository.ItemRepository;
+import com.example.stalzone_chatbot.domain.GameItem;
+import com.example.stalzone_chatbot.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -33,7 +33,7 @@ public class DataIngestionService {
     // Safer than @PostConstruct, which can fire before JPA is fully ready.
     @EventListener(ApplicationReadyEvent.class)
     public void ingestOnStartup() {
-        log.info("=== Starting Stalcraft data ingestion ===");
+        log.info("=== Starting Stalzone data ingestion ===");
         try {
             ingestItems();
         } catch (Exception e) {

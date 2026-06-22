@@ -1,4 +1,4 @@
-package com.example.stalcraft_chatbot.ingestion;
+package com.example.stalzone_chatbot.ingestion;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,13 +27,13 @@ public class GithubDataFetcher {
     // Why not @Autowired on fields? Constructor injection makes dependencies explicit
     // and allows the class to be instantiated in tests without a Spring context.
     //
-    // @Value reads from application.properties: stalcraft.github.base-url
+    // @Value reads from application.properties: stalzone.github.base-url
     // RestClient.Builder is auto-configured by Spring Boot — we customise it here.
     // the Constructor build 2 url from github repo for api url and raw base url, so we can use the same RestClient for both.
     public GithubDataFetcher(
             RestClient.Builder restClientBuilder,
             ObjectMapper objectMapper,
-            @Value("${stalcraft.github.repo}") String githubRepo
+            @Value("${stalzone.github.repo}") String githubRepo
     ) {
         String apiUrl = "https://api.github.com/repos/" + githubRepo + "/git/trees/main?recursive=1";
         String rawBaseUrl = "https://raw.githubusercontent.com/" + githubRepo + "/refs/heads/main";

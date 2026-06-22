@@ -1,4 +1,4 @@
-package com.example.stalcraft_chatbot.ingestion;
+package com.example.stalzone_chatbot.ingestion;
 
 import java.io.IOException;
 import java.util.List;
@@ -17,7 +17,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 
-import com.example.stalcraft_chatbot.ingestion.GithubDataFetcher.GameDocument;
+import com.example.stalzone_chatbot.ingestion.GithubDataFetcher.GameDocument;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @WireMockTest

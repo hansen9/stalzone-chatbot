@@ -1,4 +1,4 @@
-package com.example.stalcraft_chatbot.config;
+package com.example.stalzone_chatbot.config;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -16,7 +16,7 @@ import org.springframework.core.io.Resource;
 
 @Configuration
 public class AiConfig {
-    @Value("classpath:stalcraft-x-assistant-prompt.md")
+    @Value("classpath:stalzone-x-assistant-prompt.md")
     private Resource promptsResource;
 
     @Bean

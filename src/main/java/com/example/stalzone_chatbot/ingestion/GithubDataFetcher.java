@@ -3,6 +3,8 @@ package com.example.stalzone_chatbot.ingestion;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -17,33 +19,24 @@ import java.util.List;
 @Slf4j
 public class GithubDataFetcher {
 
-    private final RestClient restApiClient;
-    private final RestClient restRawClient;
+    private final RestClient apiClient;
+    private final RestClient rawClient;
     private final ObjectMapper objectMapper;
     private final String githubRepo;
 
     // Constructor injection — the right way to inject dependencies in Spring.
     // Why not @Autowired on fields? Constructor injection makes dependencies explicit
     // and allows the class to be instantiated in tests without a Spring context.
-    //
-    // @Value reads from application.properties: stalzone.github.base-url
-    // RestClient.Builder is auto-configured by Spring Boot — we customise it here.
-    // the Constructor build 2 url from github repo for api url and raw base url, so we can use the same RestClient for both.
     public GithubDataFetcher(
-            RestClient.Builder restClientBuilder,
+            @Qualifier("githubApiClient") RestClient apiClient,
+            @Qualifier("githubRawClient") RestClient rawClient,
             ObjectMapper objectMapper,
             @Value("${stalzone.github.repo}") String githubRepo
     ) {
-        String apiUrl = "https://api.github.com/repos/" + githubRepo + "/git/trees/main?recursive=1";
-        String rawBaseUrl = "https://raw.githubusercontent.com/" + githubRepo + "/refs/heads/main";
         // Configure the RestClient once at construction time — base URL, timeouts etc.
         // All requests from this class share this configuration.
-        this.restApiClient = restClientBuilder
-                .baseUrl(apiUrl)
-                .build();
-        this.restRawClient = restClientBuilder
-                .baseUrl(rawBaseUrl)
-                .build();
+        this.apiClient = apiClient;
+        this.rawClient = rawClient;
         this.objectMapper = objectMapper;
         this.githubRepo = githubRepo;
     }
@@ -63,7 +56,7 @@ public class GithubDataFetcher {
         List<GameDocument> documents = new ArrayList<>();
         for (String path : itemPaths) {
             try {
-                String rawContent = restRawClient.get()
+                String rawContent = rawClient.get()
                         .uri("/" + path)
                         .retrieve()
                         .body(String.class);
@@ -85,8 +78,8 @@ public class GithubDataFetcher {
     private List<String> fetchTree() {
         // this method fetches the git tree and return a list of every file path in the repo
         try {
-            String payload = restApiClient.get()
-                    .uri("")
+            String payload = apiClient.get()
+                    .uri("/git/trees/main?recursive=1")
                     .retrieve()
                     .body(String.class);
 

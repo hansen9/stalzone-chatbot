@@ -23,6 +23,7 @@ public class GithubDataFetcher {
     private final RestClient rawClient;
     private final ObjectMapper objectMapper;
     private final String githubRepo;
+    private final String itemPathPrefix;
 
     // Constructor injection — the right way to inject dependencies in Spring.
     // Why not @Autowired on fields? Constructor injection makes dependencies explicit
@@ -31,7 +32,8 @@ public class GithubDataFetcher {
             @Qualifier("githubApiClient") RestClient apiClient,
             @Qualifier("githubRawClient") RestClient rawClient,
             ObjectMapper objectMapper,
-            @Value("${stalzone.github.repo}") String githubRepo
+            @Value("${stalzone.github.repo}") String githubRepo,
+            @Value("${stalzone.github.item-path-prefix}") String itemPathPrefix
     ) {
         // Configure the RestClient once at construction time — base URL, timeouts etc.
         // All requests from this class share this configuration.
@@ -39,6 +41,7 @@ public class GithubDataFetcher {
         this.rawClient = rawClient;
         this.objectMapper = objectMapper;
         this.githubRepo = githubRepo;
+        this.itemPathPrefix = itemPathPrefix;
     }
 
     public List<GameDocument> fetchItemData() throws IOException {
@@ -49,7 +52,7 @@ public class GithubDataFetcher {
         // filter the path with static predicate, only keep the path that ends with .json and contains "items"
         // X.startsWith("global/items/weapon/") && X.endsWith(".json")
         List<String> itemPaths = paths.stream()
-                .filter(path -> path.startsWith("global/items/weapon/") && path.endsWith(".json"))
+                .filter(path -> path.startsWith(itemPathPrefix) && path.endsWith(".json"))
                 .toList();
         
         // for each path, get raw content, parse, try catch, log and skip the truncated files and errors, and convert to GameDocument
